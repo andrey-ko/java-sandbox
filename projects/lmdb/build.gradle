@@ -1,0 +1,3 @@
+dependencies {
+  implementation "org.lmdbjava:lmdbjava:0.8.1"
+}
