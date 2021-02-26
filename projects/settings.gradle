@@ -1,0 +1,3 @@
+buildscript.sourceFile.parentFile.eachDir { d ->
+  if (!d.name.startsWith('.')) include "${d.parentFile.name}:${d.name}"
+}

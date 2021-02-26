@@ -1,0 +1,57 @@
+plugins {
+  id 'org.jetbrains.kotlin.jvm' version "1.4.30" apply(false)
+}
+
+subprojects {
+  if (!subprojects.empty) {
+    return
+  }
+
+  repositories {
+    mavenCentral()
+    jcenter()
+  }
+
+  apply plugin: 'java'
+
+  java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
+
+  archivesBaseName = "sandbox-" + (path - ~/^[^\w]+/).replaceAll(~/[^\w]+/, "-")
+
+  sourceSets.main.java.srcDirs = ['main/src']
+  sourceSets.main.resources.srcDirs = ['main/res']
+  sourceSets.test.java.srcDirs = ['test/src']
+  sourceSets.test.resources.srcDirs = ['test/res']
+
+  apply plugin: 'kotlin'
+
+  compileKotlin {
+    kotlinOptions {
+      jvmTarget = JavaVersion.VERSION_11
+    }
+  }
+
+  task createDefaultProjectStructure {
+    group 'init'
+    doLast {
+      println "creating default project structure for project '${project.name}'..."
+
+      // create directories for all source sets
+      sourceSets.forEach { sourceSet ->
+        sourceSet.java.srcDirs.forEach {
+          def pathToCreate = new File(it, pckgDir)
+          println "creating sources path for '${sourceSet.name}': '$pathToCreate'"
+          pathToCreate.mkdirs()
+        }
+        sourceSet.resources.srcDirs.forEach {
+          def pathToCreate = new File(it, pckgDir)
+          println "creating resources path for '${sourceSet.name}': '$pathToCreate'"
+          pathToCreate.mkdirs()
+        }
+      }
+    }
+  }
+}

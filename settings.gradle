@@ -1,0 +1,8 @@
+rootProject.name = 'sandbox'
+
+includeDir 'projects'
+
+def includeDir(dir) {
+  include dir
+  apply from: file("$dir/settings.gradle")
+}

@@ -1,0 +1,20 @@
+group 'org.andreyko.sandbox'
+version '1.0.0'
+buildDir = '.out'
+
+ext {
+  pckg = "${group}"
+  pckgDir = pckg.replace('.', '/')
+}
+
+subprojects {
+  group group
+  version version
+  buildDir = '.out'
+
+  ext {
+    // define project base package
+    pckg = "${project.parent.pckg}.${name.replaceAll("[^\\w]+", ".")}"
+    pckgDir = pckg.replace('.', '/')
+  }
+}
